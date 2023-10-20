@@ -1,7 +1,7 @@
 ## 📝 기능 구현
 
 - [x] Welcome message 출력
-- [ ] Random number 생성
+- [x] Random number 생성
 - [ ] 사용자 입력 받기
 - [ ] Source number 와 target number 를 야구 게임 공식대로 비교
 - [ ] 결과를 한글로 출력
