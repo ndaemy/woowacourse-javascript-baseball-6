@@ -2,6 +2,8 @@ import { MissionUtils } from "@woowacourse/mission-utils";
 
 const GREETING_MESSAGE = "숫자 야구 게임을 시작합니다.";
 const INPUT_MESSAGE = "숫자를 입력해주세요 : ";
+const END_MESSAGE = "3개의 숫자를 모두 맞히셨습니다! 게임 종료";
+const RESTART_MESSAGE = "게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.";
 
 class App {
   /** @type {{strike: number, ball: number}} */
@@ -12,8 +14,10 @@ class App {
   /** @type {string} */
   #randomNumber = "";
 
-  async play() {
-    await this.#greeting();
+  async play(gameMode) {
+    if (gameMode !== "restart") {
+      this.#greeting();
+    }
 
     this.#generateRandomNumber();
     while (this.#score.strike < 3) {
@@ -23,6 +27,15 @@ class App {
       const parsedScore = this.#parseScoreToString(this.#score);
 
       MissionUtils.Console.print(parsedScore);
+    }
+
+    MissionUtils.Console.print(END_MESSAGE);
+    MissionUtils.Console.print(RESTART_MESSAGE);
+    const restart = await this.#getRestartInput();
+
+    if (restart === "1") {
+      this.#reset();
+      await this.play("restart");
     }
   }
 
@@ -106,6 +119,28 @@ class App {
     }
 
     return message;
+  }
+
+  async #getRestartInput() {
+    const input = await MissionUtils.Console.readLineAsync("");
+
+    this.#validateRestartInput(input);
+
+    return input;
+  }
+
+  #validateRestartInput(input) {
+    if (input !== "1" && input !== "2") {
+      throw new Error("1 또는 2를 입력해주세요.");
+    }
+  }
+
+  #reset() {
+    this.#score = {
+      strike: 0,
+      ball: 0,
+    };
+    this.#randomNumber = "";
   }
 }
 
