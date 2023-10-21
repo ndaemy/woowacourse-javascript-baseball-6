@@ -13,8 +13,10 @@ class App {
     MissionUtils.Console.print(randomNumber);
     MissionUtils.Console.print(userInput);
 
-    const score = this.#calculateScore(randomNumber, userInput);
-    MissionUtils.Console.print(score);
+    const scoreObj = this.#calculateScore(randomNumber, userInput);
+    const scoreString = this.#parseScoreToString(scoreObj);
+
+    MissionUtils.Console.print(scoreString);
   }
 
   #greeting() {
@@ -78,6 +80,27 @@ class App {
     }
 
     return { strike, ball };
+  }
+
+  /**
+   * @param {{strike: number, ball: number}} scoreObj
+   */
+  #parseScoreToString(scoreObj) {
+    let message = "";
+
+    if (scoreObj.ball > 0) {
+      message += `${scoreObj.ball}볼 `;
+    }
+
+    if (scoreObj.strike > 0) {
+      message += `${scoreObj.strike}스트라이크 `;
+    }
+
+    if (message === "") {
+      message = "낫싱";
+    }
+
+    return message;
   }
 }
 
