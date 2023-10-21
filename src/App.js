@@ -12,6 +12,9 @@ class App {
 
     MissionUtils.Console.print(randomNumber);
     MissionUtils.Console.print(userInput);
+
+    const score = this.#calculateScore(randomNumber, userInput);
+    MissionUtils.Console.print(score);
   }
 
   #greeting() {
@@ -55,6 +58,26 @@ class App {
     if (input.split("").some(v => input.indexOf(v) !== input.lastIndexOf(v))) {
       throw new Error("중복된 숫자가 포함되어 있습니다.");
     }
+  }
+
+  /**
+   * @param {string} computer
+   * @param {string} userInput
+   * @returns {{strike: number, ball: number}}
+   */
+  #calculateScore(computer, userInput) {
+    let strike = 0;
+    let ball = 0;
+
+    for (let i = 0; i < 3; i++) {
+      if (computer[i] === userInput[i]) {
+        strike++;
+      } else if (computer.includes(userInput[i])) {
+        ball++;
+      }
+    }
+
+    return { strike, ball };
   }
 }
 
