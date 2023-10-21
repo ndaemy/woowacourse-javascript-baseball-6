@@ -5,18 +5,23 @@ const INPUT_MESSAGE = "숫자를 입력해주세요 : ";
 
 class App {
   /** @type {{strike: number, ball: number}} */
-  #score;
+  #score = {
+    strike: 0,
+    ball: 0,
+  };
 
   async play() {
     await this.#greeting();
 
     const randomNumber = this.#generateRandomNumber();
-    const userInput = await this.#getUserInput();
+    while (this.#score.strike < 3) {
+      const userInput = await this.#getUserInput();
 
-    this.#calculateScore(randomNumber, userInput);
-    const parsedScore = this.#parseScoreToString(this.#score);
+      this.#calculateScore(randomNumber, userInput);
+      const parsedScore = this.#parseScoreToString(this.#score);
 
-    MissionUtils.Console.print(parsedScore);
+      MissionUtils.Console.print(parsedScore);
+    }
   }
 
   #greeting() {
