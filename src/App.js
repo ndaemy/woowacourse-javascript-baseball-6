@@ -9,15 +9,17 @@ class App {
     strike: 0,
     ball: 0,
   };
+  /** @type {string} */
+  #randomNumber = "";
 
   async play() {
     await this.#greeting();
 
-    const randomNumber = this.#generateRandomNumber();
+    this.#generateRandomNumber();
     while (this.#score.strike < 3) {
       const userInput = await this.#getUserInput();
 
-      this.#calculateScore(randomNumber, userInput);
+      this.#calculateScore(userInput);
       const parsedScore = this.#parseScoreToString(this.#score);
 
       MissionUtils.Console.print(parsedScore);
@@ -38,7 +40,7 @@ class App {
       }
     }
 
-    return computer.join("");
+    this.#randomNumber = computer.join("");
   }
 
   async #getUserInput() {
@@ -68,17 +70,16 @@ class App {
   }
 
   /**
-   * @param {string} computer
    * @param {string} userInput
    */
-  #calculateScore(computer, userInput) {
+  #calculateScore(userInput) {
     let strike = 0;
     let ball = 0;
 
     for (let i = 0; i < 3; i++) {
-      if (computer[i] === userInput[i]) {
+      if (this.#randomNumber[i] === userInput[i]) {
         strike++;
-      } else if (computer.includes(userInput[i])) {
+      } else if (this.#randomNumber.includes(userInput[i])) {
         ball++;
       }
     }
