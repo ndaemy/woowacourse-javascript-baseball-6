@@ -4,19 +4,19 @@ const GREETING_MESSAGE = "숫자 야구 게임을 시작합니다.";
 const INPUT_MESSAGE = "숫자를 입력해주세요 : ";
 
 class App {
+  /** @type {{strike: number, ball: number}} */
+  #score;
+
   async play() {
     await this.#greeting();
 
     const randomNumber = this.#generateRandomNumber();
     const userInput = await this.#getUserInput();
 
-    MissionUtils.Console.print(randomNumber);
-    MissionUtils.Console.print(userInput);
+    this.#calculateScore(randomNumber, userInput);
+    const parsedScore = this.#parseScoreToString(this.#score);
 
-    const scoreObj = this.#calculateScore(randomNumber, userInput);
-    const scoreString = this.#parseScoreToString(scoreObj);
-
-    MissionUtils.Console.print(scoreString);
+    MissionUtils.Console.print(parsedScore);
   }
 
   #greeting() {
@@ -65,7 +65,6 @@ class App {
   /**
    * @param {string} computer
    * @param {string} userInput
-   * @returns {{strike: number, ball: number}}
    */
   #calculateScore(computer, userInput) {
     let strike = 0;
@@ -79,7 +78,7 @@ class App {
       }
     }
 
-    return { strike, ball };
+    this.#score = { strike, ball };
   }
 
   /**
