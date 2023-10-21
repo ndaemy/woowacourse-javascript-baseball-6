@@ -4,6 +4,7 @@ const GREETING_MESSAGE = "숫자 야구 게임을 시작합니다.";
 const INPUT_MESSAGE = "숫자를 입력해주세요 : ";
 const END_MESSAGE = "3개의 숫자를 모두 맞히셨습니다! 게임 종료";
 const RESTART_MESSAGE = "게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.";
+const ERROR_MESSAGE = "[ERROR]";
 
 class App {
   /** @type {{strike: number, ball: number}} */
@@ -65,20 +66,12 @@ class App {
   }
 
   #validateUserInput(input) {
-    if (input.length !== 3) {
-      throw new Error("숫자는 3자리여야 합니다.");
-    }
-
-    if (input.split("").some(v => isNaN(v))) {
-      throw new Error("숫자가 아닌 값이 포함되어 있습니다.");
-    }
-
-    if (input.split("").some(v => v === "0")) {
-      throw new Error("0이 포함되어 있습니다.");
-    }
-
-    if (input.split("").some(v => input.indexOf(v) !== input.lastIndexOf(v))) {
-      throw new Error("중복된 숫자가 포함되어 있습니다.");
+    if (
+      input.length !== 3 ||
+      !/^[1-9]{3}$/.test(input) ||
+      new Set(input).size !== 3
+    ) {
+      throw new Error(ERROR_MESSAGE);
     }
   }
 
